@@ -27,6 +27,9 @@
             cursor: pointer;
             outline: none;
             transition: transform 0.3s;
+            transform: scale(1);
+            margin: 0;
+            padding: 0;
         }
 
         .heart-button:before,
@@ -54,10 +57,12 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 30px;
+            font-size: 36px; /* Increased font size for visibility */
             font-weight: bold;
-            color: pink;
+            color: pink; /* Changed to pink for better contrast */
             text-align: center;
+            opacity: 0; /* Initially hidden */
+            transition: opacity 1s; /* Smooth transition */
         }
 
         .heart-rain {
@@ -73,9 +78,9 @@
         .heart {
             position: absolute;
             background-color: red;
-            width: 15px;
-            height: 15px;
-            border-radius: 50%;
+            width: 30px; /* Increased heart size */
+            height: 30px; /* Increased heart size */
+            border-radius: 50%; /* Perfect circle */
             opacity: 0.8;
             animation: fall linear infinite;
         }
@@ -83,6 +88,17 @@
         @keyframes fall {
             to {
                 transform: translateY(100vh);
+            }
+        }
+
+        @keyframes blast {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(5); /* Bigger blast */
+                opacity: 0;
             }
         }
     </style>
@@ -98,13 +114,37 @@
             // Show the message
             const message = document.getElementById('message');
             message.style.display = 'block';
+            message.style.opacity = 1; // Fade in the message
 
             // Change background color
             document.body.style.transition = 'background-color 1s';
             document.body.style.backgroundColor = 'pink';
 
+            // Create heart blast effect
+            blastHearts();
+
             // Create heart rain effect
             createHeartRain();
+        }
+
+        function blastHearts() {
+            const heartBlast = document.createElement('div');
+            heartBlast.style.position = 'absolute';
+            heartBlast.style.top = '50%';
+            heartBlast.style.left = '50%';
+            heartBlast.style.transform = 'translate(-50%, -50%)';
+            heartBlast.style.backgroundColor = 'red';
+            heartBlast.style.width = '200px'; // Bigger blast
+            heartBlast.style.height = '200px'; // Bigger blast
+            heartBlast.style.borderRadius = '50%';
+            heartBlast.style.animation = 'blast 0.5s forwards'; // Blast animation
+
+            document.body.appendChild(heartBlast);
+
+            // Remove the blast after animation
+            heartBlast.addEventListener('animationend', () => {
+                heartBlast.remove();
+            });
         }
 
         function createHeartRain() {
